@@ -1,0 +1,31 @@
+{
+  "name": "location-util",
+  "version": "0.0.1",
+  "description": "Utilities for location (URL)",
+  "main": "src/location-util.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/moznion/location-util"
+  },
+  "keywords": [
+    "location",
+    "url"
+  ],
+  "author": "moznion <moznion@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moznion/location-util/issues"
+  },
+  "homepage": "https://github.com/moznion/location-util",
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "gulp": "^3.8.10",
+    "gulp-jshint": "^1.9.0",
+    "gulp-mocha": "^1.1.1",
+    "jshint-stylish": "^1.0.0",
+    "mocha": "^2.0.1"
+  }
+}
