@@ -21,7 +21,7 @@ var LocationUtil = (function () {
 
         var queries = paramStr.split('&');
         var numOfQueries = queries.length;
-        var i, query, kv, key, value;
+        var i, query, kv;
         for (i = 0; i < numOfQueries; i++) {
             query = queries[i];
 
@@ -55,20 +55,18 @@ var LocationUtil = (function () {
         var matches = url.match(regexpHash);
 
         if (matches === null) {
-            return "";
+            return '';
         }
 
         return matches[1];
     }
 
     function LocationUtil(url) {
-        var self = this;
-
         this._protocol = (function () {
             var matches = url.match('^([^:]+)://');
 
             if (matches === null) {
-                return "";
+                return '';
             }
 
             return matches[1];
@@ -78,7 +76,7 @@ var LocationUtil = (function () {
             var matches = url.match('^(?:([^:]+)://)?([^/:]+)');
 
             if (matches === null) {
-                return "";
+                return '';
             }
 
             return matches[2];
@@ -178,8 +176,9 @@ var LocationUtil = (function () {
                 this._params[key] = value;
             }
 
-            if (numOfArguments % 2 != 0) {
-                new Error('Odd number of arguments are given');
+            if (numOfArguments % 2 !== 0) {
+                var e = new Error('Odd number of arguments are given');
+                console.log(e.message);
             }
 
             return this;
