@@ -1,4 +1,4 @@
-location-util
+location-util [![Build Status](https://travis-ci.org/moznion/location-util.svg)](https://travis-ci.org/moznion/location-util)
 ==
 
 Utilities of location (URL) for browser and node. It has no dependencies.
