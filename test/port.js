@@ -16,7 +16,7 @@ describe('#port', function () {
 
     it('should get nil string if port is empty', function () {
         var l = new LocationUtil('http://example.com');
-        l.port().should.equal("");
+        should.equal(l.port(), null);
     });
 });
 

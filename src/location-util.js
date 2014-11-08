@@ -64,8 +64,6 @@ var LocationUtil = (function () {
     function LocationUtil(url) {
         var self = this;
 
-        this._url = url;
-
         this._protocol = (function () {
             var matches = url.match('^([^:]+)://');
 
@@ -90,7 +88,7 @@ var LocationUtil = (function () {
             var matches = url.match('^(?:([^:]+)://)?[^/]+?:([0-9]+)/?');
 
             if (matches === null) {
-                return "";
+                return null;
             }
 
             return parseInt(matches[2], 10);
@@ -101,7 +99,7 @@ var LocationUtil = (function () {
         this._hashFragment = parseHash(url);
     }
 
-    function buildURL (self) {
+    function buildURLPath (self) {
         var url = '';
         if (self._path !== '') {
             url += self._path;
@@ -129,8 +127,21 @@ var LocationUtil = (function () {
     }
 
     LocationUtil.prototype.absUrl = function () {
-        // TODO
-        return this._url;
+        var url = '';
+
+        if (this._protocol !== '') {
+            url = this._protocol + '://';
+        }
+
+        url += this._host;
+
+        if (this._port !== null) {
+            url += ':' + this._port;
+        }
+
+        url += buildURLPath(this);
+
+        return url;
     };
 
     LocationUtil.prototype.protocol = function () {
@@ -220,7 +231,7 @@ var LocationUtil = (function () {
             return this;
         }
 
-        return buildURL(this);
+        return buildURLPath(this);
     };
 
     return LocationUtil;
