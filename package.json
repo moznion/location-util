@@ -1,7 +1,7 @@
 {
   "name": "location-util",
   "version": "0.0.1",
-  "description": "Utilities for location (URL)",
+  "description": "Utilities of location (URL) for browser and node. It has no dependencies",
   "main": "src/location-util.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
