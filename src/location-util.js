@@ -2,57 +2,66 @@ var LocationUtil = (function () {
     'use strict';
 
     function LocationUtil(url) {
-        this.url = url;
+        this._url = url;
 
-        this._regexpProtocol = new RegExp('^([^:]+)://');
-        this._regexpHost = new RegExp('^(?:([^:]+)://)?([^/]+)/?');
-        this._regexpPort = new RegExp('^(?:([^:]+)://)?[^/]+?:([0-9]+)/?');
+        this._protocol = (function () {
+            var matches = url.match('^([^:]+)://');
+
+            if (matches === null) {
+                return null;
+            }
+
+            var protocol = matches[1];
+            if (typeof protocol === 'undefined') {
+                return null;
+            }
+            return protocol;
+        }());
+
+        this._host = (function () {
+            var matches = url.match('^(?:([^:]+)://)?([^/]+)/?');
+
+            if (matches === null) {
+                return null;
+            }
+
+            var host = matches[2];
+            if (typeof host === 'undefined') {
+                return null;
+            }
+            return host;
+        }());
+
+        this._port = (function () {
+            var matches = url.match('^(?:([^:]+)://)?[^/]+?:([0-9]+)/?');
+
+            if (matches === null) {
+                return null;
+            }
+
+            var port = matches[2];
+            if (typeof port === 'undefined') {
+                return null;
+            }
+            return parseInt(port, 10);
+        }());
     }
 
     LocationUtil.prototype.absUrl = function () {
-        return this.url;
+        // TODO
+        return this._url;
     };
 
     LocationUtil.prototype.protocol = function () {
-        var matches = this.url.match(this._regexpProtocol);
-
-        if (matches === null) {
-            return null;
-        }
-
-        var protocol = matches[1];
-        if (typeof protocol === 'undefined') {
-            return null;
-        }
-        return protocol;
+        return this._protocol;
     };
 
     LocationUtil.prototype.host = function () {
-        var matches = this.url.match(this._regexpHost);
-
-        if (matches === null) {
-            return null;
-        }
-
-        var host = matches[2];
-        if (typeof host === 'undefined') {
-            return null;
-        }
-        return host;
+        return this._host;
     };
 
     LocationUtil.prototype.port = function () {
-        var matches = this.url.match(this._regexpPort);
-
-        if (matches === null) {
-            return null;
-        }
-
-        var port = matches[2];
-        if (typeof port === 'undefined') {
-            return null;
-        }
-        return parseInt(port, 10);
+        return this._port;
     }
 
     return LocationUtil;
