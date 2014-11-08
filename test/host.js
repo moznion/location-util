@@ -22,5 +22,10 @@ describe('#host', function () {
         var l = new LocationUtil('');
         l.host().should.equal("");
     });
+
+    it('be with port num', function () {
+        var l = new LocationUtil('http://example.com:8080/');
+        l.host().should.equal('example.com');
+    });
 });
 

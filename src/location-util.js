@@ -77,7 +77,7 @@ var LocationUtil = (function () {
         }());
 
         this._host = (function () {
-            var matches = url.match('^(?:([^:]+)://)?([^/]+)/?');
+            var matches = url.match('^(?:([^:]+)://)?([^/:]+)');
 
             if (matches === null) {
                 return "";
