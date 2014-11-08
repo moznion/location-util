@@ -10,7 +10,7 @@ describe('#protocol', function () {
 
     it('should get null when protocol is empty', function () {
         var l = new LocationUtil('example.com/foo?bar=buz');
-        should.equal(l.protocol(), null);
+        l.protocol().should.equal("");
     });
 });
 

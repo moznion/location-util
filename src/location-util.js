@@ -10,42 +10,30 @@ var LocationUtil = (function () {
             var matches = url.match('^([^:]+)://');
 
             if (matches === null) {
-                return null;
+                return "";
             }
 
-            var protocol = matches[1];
-            if (typeof protocol === 'undefined') {
-                return null;
-            }
-            return protocol;
+            return matches[1];
         }());
 
         this._host = (function () {
             var matches = url.match('^(?:([^:]+)://)?([^/]+)/?');
 
             if (matches === null) {
-                return null;
+                return "";
             }
 
-            var host = matches[2];
-            if (typeof host === 'undefined') {
-                return null;
-            }
-            return host;
+            return matches[2];
         }());
 
         this._port = (function () {
             var matches = url.match('^(?:([^:]+)://)?[^/]+?:([0-9]+)/?');
 
             if (matches === null) {
-                return null;
+                return "";
             }
 
-            var port = matches[2];
-            if (typeof port === 'undefined') {
-                return null;
-            }
-            return parseInt(port, 10);
+            return parseInt(matches[2], 10);
         }());
 
         this._params = {};
@@ -95,7 +83,7 @@ var LocationUtil = (function () {
             var matches = url.match('[#](.+)$');
 
             if (matches === null) {
-                return null;
+                return "";
             }
 
             return matches[1];

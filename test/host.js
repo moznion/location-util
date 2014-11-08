@@ -18,9 +18,9 @@ describe('#host', function () {
         l.host().should.equal('example.com');
     });
 
-    it('should get null when host is empty', function () {
+    it('should get nil string when host is empty', function () {
         var l = new LocationUtil('');
-        should.equal(l.host(), null);
+        l.host().should.equal("");
     });
 });
 
