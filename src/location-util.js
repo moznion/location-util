@@ -1,6 +1,66 @@
 var LocationUtil = (function () {
     'use strict';
 
+    var regexpParams = new RegExp('[?]([^#]+)');
+    var regexpPath = new RegExp('^(?:([^:]+)://)?[^/]*(/?[^#?]*)');
+    var regexpHash = new RegExp('[#](.+)$');
+
+    function parseParams(url) {
+        var matches = url.match(regexpParams);
+
+        var params = {};
+
+        if (matches === null) {
+            return params;
+        }
+
+        var paramStr = matches[1];
+        if (typeof paramStr === 'undefined') {
+            return params;
+        }
+
+        var queries = paramStr.split('&');
+        var numOfQueries = queries.length;
+        var i, query, kv, key, value;
+        for (i = 0; i < numOfQueries; i++) {
+            query = queries[i];
+
+            kv = query.split('=');
+            if (kv.length < 2) {
+                continue;
+            }
+
+            params[kv.shift()] = kv.join('');
+        }
+
+        return params;
+    }
+
+    function parsePath (url) {
+        var matches = url.match(regexpPath);
+
+        if (matches === null) {
+            return '/';
+        }
+
+        var path = matches[2];
+        if (path === '') {
+            return '/';
+        }
+
+        return path;
+    }
+
+    function  parseHash(url) {
+        var matches = url.match(regexpHash);
+
+        if (matches === null) {
+            return "";
+        }
+
+        return matches[1];
+    }
+
     function LocationUtil(url) {
         var self = this;
 
@@ -36,58 +96,36 @@ var LocationUtil = (function () {
             return parseInt(matches[2], 10);
         }());
 
-        this._params = {};
-        (function () {
-            var matches = url.match('[?]([^#]+)');
+        this._params = parseParams(url);
+        this._path = parsePath(url);
+        this._hashFragment = parseHash(url);
+    }
 
-            if (matches === null) {
-                return;
-            }
+    function buildURL (self) {
+        var url = '';
+        if (self._path !== '') {
+            url += self._path;
+        }
 
-            var paramStr = matches[1];
-            if (typeof paramStr === 'undefined') {
-                return;
-            }
+        var paramKeys = Object.keys(self._params);
+        var numOfKeys = paramKeys.length;
+        var i, key, value;
+        var paramStrings = [];
+        for (i = 0; i < numOfKeys; i++) {
+            key = paramKeys[i];
+            value = self._params[key];
+            paramStrings.push(key + '=' + value);
+        }
+        var paramString = paramStrings.join('&');
+        if (paramString !== '') {
+            url += '?' + paramString;
+        }
 
-            var queries = paramStr.split('&');
-            var num_of_queries = queries.length;
-            var i, query, kv, key, value;
-            for (i = 0; i < num_of_queries; i++) {
-                query = queries[i];
+        if (self._hashFragment !== '') {
+            url += '#' + self._hashFragment;
+        }
 
-                kv = query.split('=');
-                if (kv.length < 2) {
-                    continue;
-                }
-
-                self._params[kv.shift()] = kv.join('');
-            }
-        }());
-
-        this._path = (function () {
-            var matches = url.match('^(?:([^:]+)://)?[^/]+(/?[^#?]*)');
-
-            if (matches === null) {
-                return '/';
-            }
-
-            var path = matches[2];
-            if (typeof path === 'undefined' || path === '') {
-                return '/';
-            }
-
-            return path;
-        }());
-
-        this._hashFragment = (function () {
-            var matches = url.match('[#](.+)$');
-
-            if (matches === null) {
-                return "";
-            }
-
-            return matches[1];
-        }());
+        return url;
     }
 
     LocationUtil.prototype.absUrl = function () {
@@ -108,13 +146,13 @@ var LocationUtil = (function () {
     };
 
     LocationUtil.prototype.search = function () {
-        var num_of_arguments = arguments.length;
+        var numOfArguments = arguments.length;
 
-        if (num_of_arguments) {
+        if (numOfArguments) {
             // for setter behavior
 
             var key, value;
-            for (var i = 0; i < num_of_arguments; i += 2) {
+            for (var i = 0; i < numOfArguments; i += 2) {
                 key = arguments[i];
                 value = arguments[i+1];
                 if (typeof key === 'undefined' || typeof value === 'undefined') {
@@ -129,7 +167,7 @@ var LocationUtil = (function () {
                 this._params[key] = value;
             }
 
-            if (num_of_arguments % 2 != 0) {
+            if (numOfArguments % 2 != 0) {
                 new Error('Odd number of arguments are given');
             }
 
@@ -141,9 +179,9 @@ var LocationUtil = (function () {
     };
 
     LocationUtil.prototype.path = function () {
-        var num_of_arguments = arguments.length;
+        var numOfArguments = arguments.length;
 
-        if (num_of_arguments) {
+        if (numOfArguments) {
             var path = arguments[0];
             if (path[0] !== '/') {
                 path = '/' + path;
@@ -159,14 +197,30 @@ var LocationUtil = (function () {
     };
 
     LocationUtil.prototype.hash = function () {
-        var num_of_arguments = arguments.length;
+        var numOfArguments = arguments.length;
 
-        if (num_of_arguments) {
+        if (numOfArguments) {
             this._hashFragment = arguments[0];
             return this;
         }
 
         return this._hashFragment;
+    };
+
+    LocationUtil.prototype.url = function () {
+        var numOfArguments = arguments.length;
+
+        if (numOfArguments) {
+            var url = arguments[0];
+
+            this._params = parseParams(url);
+            this._path = parsePath(url);
+            this._hashFragment = parseHash(url);
+
+            return this;
+        }
+
+        return buildURL(this);
     };
 
     return LocationUtil;
