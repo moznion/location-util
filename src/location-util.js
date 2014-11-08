@@ -75,6 +75,21 @@ var LocationUtil = (function () {
                 self._params[kv.shift()] = kv.join('');
             }
         }());
+
+        this._path = (function () {
+            var matches = url.match('^(?:([^:]+)://)?[^/]+(/?[^#?]*)');
+
+            if (matches === null) {
+                return '/';
+            }
+
+            var path = matches[2];
+            if (typeof path === 'undefined' || path === '') {
+                return '/';
+            }
+
+            return path;
+        }());
     }
 
     LocationUtil.prototype.absUrl = function () {
@@ -92,7 +107,7 @@ var LocationUtil = (function () {
 
     LocationUtil.prototype.port = function () {
         return this._port;
-    }
+    };
 
     LocationUtil.prototype.search = function () {
         var num_of_arguments = arguments.length;
@@ -125,7 +140,25 @@ var LocationUtil = (function () {
 
         // for getter behavior
         return this._params;
-    }
+    };
+
+    LocationUtil.prototype.path = function () {
+        var num_of_arguments = arguments.length;
+
+        if (num_of_arguments) {
+            var path = arguments[0];
+            if (path[0] !== '/') {
+                path = '/' + path;
+            }
+
+            this._path = path;
+
+            return this;
+        }
+
+        // for getter behavior
+        return this._path;
+    };
 
     return LocationUtil;
 }());
