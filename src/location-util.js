@@ -90,6 +90,16 @@ var LocationUtil = (function () {
 
             return path;
         }());
+
+        this._hashFragment = (function () {
+            var matches = url.match('[#](.+)$');
+
+            if (matches === null) {
+                return null;
+            }
+
+            return matches[1];
+        }());
     }
 
     LocationUtil.prototype.absUrl = function () {
@@ -158,6 +168,17 @@ var LocationUtil = (function () {
 
         // for getter behavior
         return this._path;
+    };
+
+    LocationUtil.prototype.hash = function () {
+        var num_of_arguments = arguments.length;
+
+        if (num_of_arguments) {
+            this._hashFragment = arguments[0];
+            return this;
+        }
+
+        return this._hashFragment;
     };
 
     return LocationUtil;
