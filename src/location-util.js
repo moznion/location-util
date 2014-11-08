@@ -2,6 +2,8 @@ var LocationUtil = (function () {
     'use strict';
 
     function LocationUtil(url) {
+        var self = this;
+
         this._url = url;
 
         this._protocol = (function () {
@@ -45,6 +47,34 @@ var LocationUtil = (function () {
             }
             return parseInt(port, 10);
         }());
+
+        this._params = {};
+        (function () {
+            var matches = url.match('[?]([^#]+)');
+
+            if (matches === null) {
+                return;
+            }
+
+            var paramStr = matches[1];
+            if (typeof paramStr === 'undefined') {
+                return;
+            }
+
+            var queries = paramStr.split('&');
+            var num_of_queries = queries.length;
+            var i, query, kv, key, value;
+            for (i = 0; i < num_of_queries; i++) {
+                query = queries[i];
+
+                kv = query.split('=');
+                if (kv.length < 2) {
+                    continue;
+                }
+
+                self._params[kv.shift()] = kv.join('');
+            }
+        }());
     }
 
     LocationUtil.prototype.absUrl = function () {
@@ -64,7 +94,41 @@ var LocationUtil = (function () {
         return this._port;
     }
 
+    LocationUtil.prototype.search = function () {
+        var num_of_arguments = arguments.length;
+
+        if (num_of_arguments) {
+            // for setter behavior
+
+            var key, value;
+            for (var i = 0; i < num_of_arguments; i += 2) {
+                key = arguments[i];
+                value = arguments[i+1];
+                if (typeof key === 'undefined' || typeof value === 'undefined') {
+                    continue;
+                }
+
+                if (value === null) {
+                    delete this._params[key];
+                    continue;
+                }
+
+                this._params[key] = value;
+            }
+
+            if (num_of_arguments % 2 != 0) {
+                new Error('Odd number of arguments are given');
+            }
+
+            return this;
+        }
+
+        // for getter behavior
+        return this._params;
+    }
+
     return LocationUtil;
 }());
 
 this.LocationUtil = LocationUtil;
+
