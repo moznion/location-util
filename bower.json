@@ -1,0 +1,24 @@
+{
+  "name": "location-util",
+  "version": "0.0.1",
+  "homepage": "https://github.com/moznion/location-util",
+  "authors": [
+    "moznion <moznion@gmail.com>"
+  ],
+  "description": "Utilities of location (URL) for browser and node. It has no dependencies",
+  "main": "dist/location-util.js",
+  "keywords": [
+    "location",
+    "url"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "gulpfile.js",
+    "package.json"
+  ]
+}

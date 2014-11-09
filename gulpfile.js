@@ -4,6 +4,10 @@ var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var git = require('gulp-git');
+var bump = require('gulp-bump');
+var filter = require('gulp-filter');
+var tag_version = require('gulp-tag-version');
 
 gulp.task('test', function () {
     if (typeof process.env.NODE_ENV === 'undefined') {
@@ -28,4 +32,16 @@ gulp.task('dist', function () {
 });
 
 gulp.task('default', ['dist']);
+
+function inc(importance) {
+    return gulp.src(['./package.json', './bower.json'])
+        .pipe(bump({type: importance}))
+        .pipe(gulp.dest('./'))
+        .pipe(git.commit('bumps package version'))
+        .pipe(filter('package.json'))
+        .pipe(tag_version());
+}
+gulp.task('patch', ['dist'], function() { return inc('patch'); });
+gulp.task('feature', ['dist'], function() { return inc('minor'); });
+gulp.task('release', ['dist'], function() { return inc('major'); });
 
