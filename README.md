@@ -7,20 +7,120 @@ Synopsis
 --
 
 ```javascript
-var l = new LocationUtil('http://example.com:3000/foo?bar=buz#FRAG');
+var l = new LocationUtil('http://example.com:3000/foo?bar=buz#frag');
 l.protocol(); // => 'http'
 l.host();     // => 'example.com'
 l.port();     // => 3000
 l.search();   // => {'bar': 'buz'}
-l.hash();     // => 'FRAG'
+l.hash();     // => 'frag'
 l.path();     // => '/foo'
-l.url();      // => '/foo?bar=buz#FRAG'
+l.url();      // => '/foo?bar=buz#frag'
+
+l.url('/user?id=123#name').absUrl();               // => 'http://example.com:3000/user?id=123#name'
+l.path('/entry').absUrl();                         // => 'http://example.com:3000/entry?id=123#name'
+l.search('date', '20140401', 'id', null).absUrl(); // => 'http://example.com:3000/entry?date=20140401#name'
+l.hash('').absUrl();                               // => 'http://example.com:3000/entry?date=20140401'
 ```
 
 Methods
 --
 
-TBD
+- `new Locationutil(url)`
+
+Creates an instance. It takes `url` as string.
+
+- `absUrl()`
+
+This method provides getter only.
+
+It returns full URL.
+
+- `protocol()`
+
+This method provides getter only.
+
+It returns protocol (e.g. `http`). If protocol is empty, it returns blank string.
+
+- `host()`
+
+This method provides getter only.
+
+It returns the part of host.
+
+- `port()`
+
+This method provides getter only.
+
+It returns port number. If port number is empty, it returns `null`.
+
+- `search([queries])`
+
+This method provides getter and setter.
+
+If you use this method without any arguments, this method behave as getter. It returns the query as object (e.g. `{'bar': 'buz'}`).
+If query is empty, it returns blank object.
+
+The another case, this method behave as setter. It changes query according to arguments and returns changed instance.
+If value of queries is null, the property specified via the first argument will be deleted.
+
+```javascript
+var l = new LocationUtil('http://example.com?foo=bar');
+l.search(); // => {'foo': 'bar'}
+l.search('buz', 'qux');
+l.search(); // => {'foo': 'bar', 'buz': 'qux'}
+l.search('foo', null);
+l.search(); // => {'buz': 'qux'}
+```
+
+- `path(pathString)`
+
+This method provides getter and setter.
+
+If you use this method without any arguments, this method behave as getter. It returns the part of path (e.g. `/foo/bar`).
+If path is empty, it returns '/'.
+
+The another case, this method behave as setter. It changes path according to arguments and returns changed instance.
+Path should always begin with forward slash ('/'), this method will add the forward slash if it is missing.
+
+```javascript
+var l = new LocationUtil('http://example.com/foo');
+l.path(); // => '/foo'
+l.path('/bar/buz');
+l.path(); // => '/bar/buz'
+```
+
+- `hash(hashString)`
+
+This method provides getter and setter.
+
+If you use this method without any arguments, this method behave as getter. It returns the part of hash fragment.
+If hash is empty, it returns blank string.
+
+The another case, this method behave as setter. It changes hash fragment according to arguments and returns changed instance.
+
+```javascript
+var l = new LocationUtil('http://example.com#foo');
+l.hash(); // => 'foo'
+l.hash('bar');
+l.hash(); // => 'bar'
+```
+
+- `url(urlString)`
+
+This method provides getter and setter.
+
+If you use this method without any arguments, this method behave as getter. It returns the URL (e.g. /foo?bar=buz#frag).
+If URL is empty, it returns blank string.
+
+The another case, this method behave as setter. It changes URL according to arguments and returns changed instance.
+URL should always begin with forward slash ('/'), this method will add the forward slash if it is missing.
+
+```javascript
+var l = new LocationUtil('http://example.com/foo?bar=buz#frag');
+l.url(); // => '/foo?bar=buz#frag'
+l.url('/user?id=123#name');
+l.url(); // => '/user?id=123#name'
+```
 
 Author
 --
@@ -31,3 +131,4 @@ License
 --
 
 MIT
+
