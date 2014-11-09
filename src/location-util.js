@@ -62,39 +62,33 @@ var LocationUtil = (function () {
     }
 
     function LocationUtil(url) {
-        this._protocol = (function () {
-            var matches = url.match('^([^:]+)://');
-
-            if (matches === null) {
-                return '';
-            }
-
-            return matches[1];
-        }());
-
-        this._host = (function () {
-            var matches = url.match('^(?:([^:]+)://)?([^/:]+)');
-
-            if (matches === null) {
-                return '';
-            }
-
-            return matches[2];
-        }());
-
-        this._port = (function () {
-            var matches = url.match('^(?:([^:]+)://)?[^/]+?:([0-9]+)/?');
-
-            if (matches === null) {
-                return null;
-            }
-
-            return parseInt(matches[2], 10);
-        }());
+        this._protocol = '';
+        this._host = '';
+        this._port = null;
 
         this._params = parseParams(url);
         this._path = parsePath(url);
         this._hashFragment = parseHash(url);
+
+        var matches = url.match('^(?:([^:]+)://)?([^/:]+)(?::([0-9]+))?');
+        //                            ~~~~~       ~~~~~~      ~~~~~~
+        //                              |           |           |- port
+        //                              |           |- host
+        //                              |- protocol
+
+        if (matches === null) {
+            return;
+        }
+
+        if (typeof matches[1] !== 'undefined') {
+            this._protocol = matches[1];
+        }
+
+        this._host = matches[2];
+
+        if (typeof matches[3] !== 'undefined') {
+            this._port = parseInt(matches[3], 10);
+        }
     }
 
     function buildURLPath (self) {
