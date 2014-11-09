@@ -28,14 +28,12 @@ describe('#path', function () {
     describe('with arguments (setter)', function () {
         it('should set path successfully', function () {
             var l = new LocationUtil('http://example.com/foo/bar?hoge=fuga#frag');
-            var changed = l.path('/hoge/fuga');
-            changed.path().should.equal('/hoge/fuga');
+            l.path('/hoge/fuga').path().should.equal('/hoge/fuga');
         });
 
         it('complete leading slash if it is omitted', function () {
             var l = new LocationUtil('http://example.com/foo/bar?hoge=fuga#frag');
-            var changed = l.path('hoge/fuga');
-            changed.path().should.equal('/hoge/fuga');
+            l.path('hoge/fuga').path().should.equal('/hoge/fuga');
         });
     });
 });

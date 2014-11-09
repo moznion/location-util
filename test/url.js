@@ -13,14 +13,12 @@ describe('#url', function () {
     describe('with arguments (setter)', function () {
         it('should set url successfully', function () {
             var l = new LocationUtil('http://example.com');
-            var changed = l.url('/foo/bar?hoge=fuga#frag');
-            changed.url().should.equal('/foo/bar?hoge=fuga#frag');
+            l.url('/foo/bar?hoge=fuga#frag').url().should.equal('/foo/bar?hoge=fuga#frag');
         });
 
         it('should set url successfully when leading slash is omitted', function () {
             var l = new LocationUtil('http://example.com');
-            var changed = l.url('foo/bar?hoge=fuga#frag');
-            changed.url().should.equal('/foo/bar?hoge=fuga#frag');
+            l.url('foo/bar?hoge=fuga#frag').url().should.equal('/foo/bar?hoge=fuga#frag');
         });
     });
 });

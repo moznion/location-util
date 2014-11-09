@@ -13,8 +13,7 @@ describe('#hash', function () {
     describe('with arguments (setter)', function () {
         it('should set hash fragment successfully', function () {
             var l = new LocationUtil('http://example.com/foo/bar?hoge=fuga#frag');
-            var changed = l.hash('foobar')
-            changed.hash().should.equal('foobar');
+            l.hash('foobar').hash().should.equal('foobar');
         });
     });
 });

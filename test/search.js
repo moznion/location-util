@@ -21,8 +21,7 @@ describe('#search', function () {
     describe('with arguments (setter)', function () {
         it('should set parameters successfully', function () {
             var l = new LocationUtil('http://example.com/foo?bar=buz&hoge=fuga#frag');
-            var changed = l.search('piyo', 'piyopiyo');
-            changed.search().should.deep.equal({
+            l.search('piyo', 'piyopiyo').search().should.deep.equal({
                 'bar': 'buz',
                 'hoge': 'fuga',
                 'piyo': 'piyopiyo'
@@ -31,16 +30,14 @@ describe('#search', function () {
 
         it('should set parameters successfully', function () {
             var l = new LocationUtil('http://example.com/foo?bar=buz&hoge=fuga#frag');
-            var changed = l.search('hoge', null);
-            changed.search().should.deep.equal({
+            l.search('hoge', null).search().should.deep.equal({
                 'bar': 'buz'
             });
         });
 
         it('odd arguments are given', function () {
             var l = new LocationUtil('http://example.com/foo?bar=buz&hoge=fuga#frag');
-            var changed = l.search('hoge', 'piyo', 'bar');
-            changed.search().should.deep.equal({
+            l.search('hoge', 'piyo', 'bar').search().should.deep.equal({
                 'hoge': 'piyo',
                 'bar': 'buz'
             });
