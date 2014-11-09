@@ -1,4 +1,4 @@
-location-util [![Build Status](https://travis-ci.org/moznion/location-util.svg)](https://travis-ci.org/moznion/location-util)
+location-util [![NPM version](https://badge.fury.io/js/location-util.svg)](https://www.npmjs.org/package/location-util) [![Build Status](https://travis-ci.org/moznion/location-util.svg)](https://travis-ci.org/moznion/location-util)
 ==
 
 Utilities of location (URL) for browser and node. It has no dependencies.
