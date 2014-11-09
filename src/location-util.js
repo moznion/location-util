@@ -1,12 +1,14 @@
 var LocationUtil = (function () {
     'use strict';
 
-    var regexpParams = new RegExp('[?]([^#]+)');
-    var regexpPath = new RegExp('^(?:([^:]+)://)?[^/]*(/?[^#?]*)');
-    var regexpHash = new RegExp('[#](.+)$');
+    var regexp = new RegExp('^(?:([^:]+)://)?([^/:]+)?(?::([0-9]+))?(/[^#?]*)?(?:[?]([^#]+))?(?:[#](.+))?$');
+    //                            ~~~~~       ~~~~~~       ~~~~~~    ~~~~~~~         ~~~~~          ~~
+    //                              |           |            |- port    |              |             |- hash
+    //                              |           |- host                 |              |- queries
+    //                              |- protocol                         |- paths
 
     function parseParams(url) {
-        var matches = url.match(regexpParams);
+        var matches = url.match(regexp);
 
         var params = {};
 
@@ -14,7 +16,7 @@ var LocationUtil = (function () {
             return params;
         }
 
-        var paramStr = matches[1];
+        var paramStr = matches[5];
         if (typeof paramStr === 'undefined') {
             return params;
         }
@@ -37,14 +39,14 @@ var LocationUtil = (function () {
     }
 
     function parsePath (url) {
-        var matches = url.match(regexpPath);
+        var matches = url.match(regexp);
 
         if (matches === null) {
             return '/';
         }
 
-        var path = matches[2];
-        if (path === '') {
+        var path = matches[4];
+        if (path === undefined) {
             return '/';
         }
 
@@ -52,13 +54,13 @@ var LocationUtil = (function () {
     }
 
     function  parseHash(url) {
-        var matches = url.match(regexpHash);
+        var matches = url.match(regexp);
 
         if (matches === null) {
             return '';
         }
 
-        return matches[1];
+        return matches[6];
     }
 
     function LocationUtil(url) {
@@ -70,21 +72,15 @@ var LocationUtil = (function () {
         this._path = parsePath(url);
         this._hashFragment = parseHash(url);
 
-        var matches = url.match('^(?:([^:]+)://)?([^/:]+)(?::([0-9]+))?');
-        //                            ~~~~~       ~~~~~~      ~~~~~~
-        //                              |           |           |- port
-        //                              |           |- host
-        //                              |- protocol
-
-        if (matches === null) {
-            return;
-        }
+        var matches = url.match(regexp);
 
         if (typeof matches[1] !== 'undefined') {
             this._protocol = matches[1];
         }
 
-        this._host = matches[2];
+        if (typeof matches[2] !== 'undefined') {
+            this._host = matches[2];
+        }
 
         if (typeof matches[3] !== 'undefined') {
             this._port = parseInt(matches[3], 10);
@@ -216,6 +212,10 @@ var LocationUtil = (function () {
 
         if (numOfArguments) {
             var url = arguments[0];
+
+            if (url[0] !== '/') {
+                url = '/' + url;
+            }
 
             this._params = parseParams(url);
             this._path = parsePath(url);
