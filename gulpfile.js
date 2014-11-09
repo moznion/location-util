@@ -2,6 +2,8 @@ var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 
 gulp.task('test', function () {
     if (typeof process.env.NODE_ENV === 'undefined') {
@@ -16,3 +18,14 @@ gulp.task('lint', function () {
         .pipe(jshint())
         .pipe(jshint.reporter(stylish));
 });
+
+gulp.task('dist', function () {
+    return gulp.src('src/*.js')
+        .pipe(gulp.dest('dist'))
+        .pipe(uglify())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('default', ['dist']);
+
