@@ -32,5 +32,12 @@ describe('#paramString()', function () {
         var l = new LocationUtil('example.com?hoge=fuga&piyo=moge');
         l.paramString().should.equal('?hoge=fuga&piyo=moge');
     });
+
+    it('should be got parameter string when with search()', function () {
+        var l = new LocationUtil('http://example.com?foo=bar');
+        l.paramString().should.equal('?foo=bar');
+        l.search('buz', 'qux');
+        l.paramString().should.equal('?foo=bar&buz=qux');
+    });
 });
 

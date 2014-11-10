@@ -8,13 +8,14 @@ Synopsis
 
 ```javascript
 var l = new LocationUtil('http://example.com:3000/foo?bar=buz#frag');
-l.protocol(); // => 'http'
-l.host();     // => 'example.com'
-l.port();     // => 3000
-l.search();   // => {'bar': 'buz'}
-l.hash();     // => 'frag'
-l.path();     // => '/foo'
-l.url();      // => '/foo?bar=buz#frag'
+l.protocol();    // => 'http'
+l.host();        // => 'example.com'
+l.port();        // => 3000
+l.search();      // => {'bar': 'buz'}
+l.paramString(); // => '?bar=buz'
+l.hash();        // => 'frag'
+l.path();        // => '/foo'
+l.url();         // => '/foo?bar=buz#frag'
 
 l.url('/user?id=123#name').absUrl();               // => 'http://example.com:3000/user?id=123#name'
 l.path('/entry').absUrl();                         // => 'http://example.com:3000/entry?id=123#name'
@@ -70,6 +71,19 @@ l.search('buz', 'qux');
 l.search(); // => {'foo': 'bar', 'buz': 'qux'}
 l.search('foo', null);
 l.search(); // => {'buz': 'qux'}
+```
+
+- `paramString()`
+
+This method provides getter only.
+
+This method returns query parameter string like a `?foo=bar&buz=qux`. This method *doesn't* ensure the order of key-values.
+
+```javascript
+var l = new LocationUtil('http://example.com?foo=bar');
+l.paramString(); // => '?foo=bar'
+l.search('buz', 'qux');
+l.paramString(); // => '?foo=bar&buz=qux'
 ```
 
 - `path(pathString)`
