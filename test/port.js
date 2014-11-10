@@ -3,20 +3,69 @@ var should = require('chai').should();
 var LocationUtil = require('../src/location-util.js').LocationUtil;
 
 
-describe('#port', function () {
-    it('should get port rightly', function () {
-        var l = new LocationUtil('http://example.com:8080/foo?bar=buz');
-        l.port().should.equal(8080);
+describe('#port()', function () {
+    describe('when port exists', function () {
+        it('should be got port when full url is given', function () {
+            var l = new LocationUtil('http://example.com:3000/foo/bar?hoge=fuga#frag');
+            l.port().should.equal(3000);
+        });
+
+        it('should be got port when url that is omitted protocol is given', function () {
+            var l = new LocationUtil('example.com:3000/foo/bar?hoge=fuga#frag');
+            l.port().should.equal(3000);
+        });
+
+        it('should be got port when url that is omitted path is given', function () {
+            var l = new LocationUtil('http://example.com:3000?hoge=fuga#frag');
+            l.port().should.equal(3000);
+        });
+
+        it('should be got port when url that is omitted query parameters is given', function () {
+            var l = new LocationUtil('http://example.com:3000/foo/bar#frag');
+            l.port().should.equal(3000);
+        });
+
+        it('should be got port when url that is omitted hash fragment is given', function () {
+            var l = new LocationUtil('http://example.com:3000/foo/bar?hoge=fuga');
+            l.port().should.equal(3000);
+        });
+
+        it('should be got port when minimal url is given', function () {
+            var l = new LocationUtil('example.com:3000');
+            l.port().should.equal(3000);
+        });
     });
 
-    it('should get port rightly without protocol and paths', function () {
-        var l = new LocationUtil('example.com:8080');
-        l.port().should.equal(8080);
-    });
+    describe('when port does not exist', function () {
+        it('should be got null when full url is given', function () {
+            var l = new LocationUtil('http://example.com/foo/bar?hoge=fuga#frag');
+            should.equal(l.port(), null);
+        });
 
-    it('should get nil string if port is empty', function () {
-        var l = new LocationUtil('http://example.com');
-        should.equal(l.port(), null);
+        it('should be got null when url that is omitted protocol is given', function () {
+            var l = new LocationUtil('example.com/foo/bar?hoge=fuga#frag');
+            should.equal(l.port(), null);
+        });
+
+        it('should be got null when url that is omitted path is given', function () {
+            var l = new LocationUtil('http://example.com?hoge=fuga#frag');
+            should.equal(l.port(), null);
+        });
+
+        it('should be got null when url that is omitted query parameters is given', function () {
+            var l = new LocationUtil('http://example.com/foo/bar#frag');
+            should.equal(l.port(), null);
+        });
+
+        it('should be got null when url that is omitted hash fragment is given', function () {
+            var l = new LocationUtil('http://example.com/foo/bar?hoge=fuga');
+            should.equal(l.port(), null);
+        });
+
+        it('should be got null when minimal url is given', function () {
+            var l = new LocationUtil('example.com');
+            should.equal(l.port(), null);
+        });
     });
 });
 

@@ -2,9 +2,9 @@ var should = require('chai').should();
 
 var LocationUtil = require('../src/location-util.js').LocationUtil;
 
-describe('#hash', function () {
+describe('#hash()', function () {
     describe('with no arguments (getter)', function () {
-        describe('Hash fragment exists', function () {
+        describe('when hash fragment exists', function () {
             it('should be got hash fragment when full url is given', function () {
                 var l = new LocationUtil('http://example.com:3000/foo/bar?hoge=fuga#frag');
                 l.hash().should.equal('frag');
@@ -21,7 +21,7 @@ describe('#hash', function () {
             });
 
             it('should be got hash fragment when url that is omitted path is given', function () {
-                var l = new LocationUtil('http://example.com:3000/?hoge=fuga#frag');
+                var l = new LocationUtil('http://example.com:3000?hoge=fuga#frag');
                 l.hash().should.equal('frag');
             });
 
@@ -36,7 +36,7 @@ describe('#hash', function () {
             });
         });
 
-        describe('Hash fragment is empty', function () {
+        describe('when hash fragment is empty', function () {
             it('should be got blank string when full url is given', function () {
                 var l = new LocationUtil('http://example.com:3000/foo/bar?hoge=fuga');
                 l.hash().should.equal('');
@@ -53,7 +53,7 @@ describe('#hash', function () {
             });
 
             it('should be got blank string when url that is omitted path is given', function () {
-                var l = new LocationUtil('http://example.com:3000/?hoge=fuga');
+                var l = new LocationUtil('http://example.com:3000?hoge=fuga');
                 l.hash().should.equal('');
             });
 
@@ -67,7 +67,6 @@ describe('#hash', function () {
                 l.hash().should.equal('');
             });
         });
-
     });
 
     describe('with arguments (setter)', function () {
