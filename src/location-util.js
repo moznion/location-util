@@ -46,7 +46,7 @@ var LocationUtil = (function () {
         }
 
         var path = matches[4];
-        if (path === undefined) {
+        if (typeof path === 'undefined') {
             return '/';
         }
 
@@ -60,7 +60,12 @@ var LocationUtil = (function () {
             return '';
         }
 
-        return matches[6];
+        var hashFragment = matches[6];
+        if (typeof hashFragment === 'undefined') {
+            return '';
+        }
+
+        return hashFragment;
     }
 
     function LocationUtil(url) {
