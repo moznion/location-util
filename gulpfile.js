@@ -34,9 +34,12 @@ gulp.task('dist', function () {
 gulp.task('default', ['dist']);
 
 function inc(importance) {
-    return gulp.src(['./package.json', './bower.json'])
+    gulp.src(['./package.json', './bower.json'])
         .pipe(bump({type: importance}))
-        .pipe(gulp.dest('./'))
+        .pipe(gulp.dest('./'));
+
+    gulp.src('./')
+        .pipe(git.add())
         .pipe(git.commit('bumps package version'))
         .pipe(filter('package.json'))
         .pipe(tag_version());
