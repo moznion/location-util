@@ -36,10 +36,7 @@ gulp.task('default', ['dist']);
 function inc(importance) {
     gulp.src(['./package.json', './bower.json'])
         .pipe(bump({type: importance}))
-        .pipe(gulp.dest('./'));
-
-    gulp.src('./')
-        .pipe(git.add())
+        .pipe(gulp.dest('./'))
         .pipe(git.commit('bumps package version'))
         .pipe(filter('package.json'))
         .pipe(tag_version());
