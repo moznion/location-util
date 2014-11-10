@@ -10,7 +10,46 @@ var LocationUtil = (function () {
     function parseParams(url) {
         var matches = url.match(regexp);
 
-        var params = {};
+        var Params = (function () {
+            function Params() {
+                this.kv = {};
+            }
+
+            Params.prototype.add = function (key, value) {
+                this.kv[key] = value;
+            };
+
+            Params.prototype.delete = function (key) {
+                delete this.kv[key];
+            };
+
+            Params.prototype.get = function () {
+                return this.kv;
+            };
+
+            Params.prototype.toString = function () {
+                var keys = Object.keys(this.kv);
+                var numOfKeys = keys.length;
+                var paramStrings = [];
+                var i, key, value;
+                for (i = 0; i < numOfKeys; i++) {
+                    key = keys[i];
+                    value = this.kv[key];
+                    paramStrings.push(key + '=' + value);
+                }
+
+                var paramString = paramStrings.join('&');
+                if (paramString !== '') {
+                    paramString = '?' + paramString;
+                }
+
+                return paramString;
+            };
+
+            return Params;
+        }());
+
+        var params = new Params();
 
         if (matches === null) {
             return params;
@@ -32,7 +71,7 @@ var LocationUtil = (function () {
                 continue;
             }
 
-            params[kv.shift()] = kv.join('');
+            params.add(kv.shift(), kv.join(''));
         }
 
         return params;
@@ -98,19 +137,7 @@ var LocationUtil = (function () {
             url += self._path;
         }
 
-        var paramKeys = Object.keys(self._params);
-        var numOfKeys = paramKeys.length;
-        var i, key, value;
-        var paramStrings = [];
-        for (i = 0; i < numOfKeys; i++) {
-            key = paramKeys[i];
-            value = self._params[key];
-            paramStrings.push(key + '=' + value);
-        }
-        var paramString = paramStrings.join('&');
-        if (paramString !== '') {
-            url += '?' + paramString;
-        }
+        url += self._params.toString();
 
         if (self._hashFragment !== '') {
             url += '#' + self._hashFragment;
@@ -164,11 +191,11 @@ var LocationUtil = (function () {
                 }
 
                 if (value === null) {
-                    delete this._params[key];
+                    this._params.delete(key);
                     continue;
                 }
 
-                this._params[key] = value;
+                this._params.add(key, value);
             }
 
             if (numOfArguments % 2 !== 0) {
@@ -180,8 +207,12 @@ var LocationUtil = (function () {
         }
 
         // for getter behavior
-        return this._params;
+        return this._params.get();
     };
+
+    LocationUtil.prototype.paramString = function () {
+        return this._params.toString();
+    }
 
     LocationUtil.prototype.path = function () {
         var numOfArguments = arguments.length;
