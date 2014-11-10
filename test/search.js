@@ -2,7 +2,7 @@ var should = require('chai').should();
 
 var LocationUtil = require('../src/location-util.js').LocationUtil;
 
-describe('#search', function () {
+describe('#search()', function () {
     describe('with no arguments (getter)', function () {
         describe('when parameters exist', function () {
             it('should be got query parameters when full url is given', function () {
@@ -58,31 +58,61 @@ describe('#search', function () {
             it('should be got empty object when full url is given', function () {
                 var l = new LocationUtil('http://example.com:3000/foo#frag');
                 l.search().should.deep.equal({});
+                l.protocol().should.equal('http');
+                l.host().should.equal('example.com');
+                l.port().should.equal(3000);
+                l.path().should.equal('/foo');
+                l.hash().should.equal('frag');
             });
 
             it('should be got empty object when url that is omitted protocol is given', function () {
                 var l = new LocationUtil('example.com:3000/foo#frag');
                 l.search().should.deep.equal({});
+                l.protocol().should.equal('');
+                l.host().should.equal('example.com');
+                l.port().should.equal(3000);
+                l.path().should.equal('/foo');
+                l.hash().should.equal('frag');
             });
 
             it('should be got empty object when url that is omitted port is given', function () {
                 var l = new LocationUtil('http://example.com/foo#frag');
                 l.search().should.deep.equal({});
+                l.protocol().should.equal('http');
+                l.host().should.equal('example.com');
+                should.equal(l.port(), null);
+                l.path().should.equal('/foo');
+                l.hash().should.equal('frag');
             });
 
             it('should be got empty object when url that is omitted path is given', function () {
                 var l = new LocationUtil('http://example.com:3000#frag');
                 l.search().should.deep.equal({});
+                l.protocol().should.equal('http');
+                l.host().should.equal('example.com');
+                l.port().should.equal(3000);
+                l.path().should.equal('/');
+                l.hash().should.equal('frag');
             });
 
             it('should be got empty object when url that is omitted hash fragment is given', function () {
                 var l = new LocationUtil('http://example.com:3000/foo');
                 l.search().should.deep.equal({});
+                l.protocol().should.equal('http');
+                l.host().should.equal('example.com');
+                l.port().should.equal(3000);
+                l.path().should.equal('/foo');
+                l.hash().should.equal('');
             });
 
             it('should be got empty object when minimal url is given', function () {
                 var l = new LocationUtil('example.com');
                 l.search().should.deep.equal({});
+                l.protocol().should.equal('');
+                l.host().should.equal('example.com');
+                should.equal(l.port(), null);
+                l.path().should.equal('/');
+                l.hash().should.equal('');
             });
         });
     });

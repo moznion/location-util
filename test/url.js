@@ -2,7 +2,7 @@ var should = require('chai').should();
 
 var LocationUtil = require('../src/location-util.js').LocationUtil;
 
-describe('#url', function () {
+describe('#url()', function () {
     describe('with no arguments (getter)', function () {
         it('should get url', function () {
             var l = new LocationUtil('http://example.com/foo/bar?hoge=fuga#frag');

@@ -40,31 +40,61 @@ describe('#hash()', function () {
             it('should be got blank string when full url is given', function () {
                 var l = new LocationUtil('http://example.com:3000/foo/bar?hoge=fuga');
                 l.hash().should.equal('');
+                l.protocol().should.equal('http');
+                l.host().should.equal('example.com');
+                l.port().should.equal(3000);
+                l.path().should.equal('/foo/bar');
+                l.search().should.deep.equal({'hoge': 'fuga'});
             });
 
             it('should be got blank string when url that is omitted protocol is given', function () {
                 var l = new LocationUtil('example.com:3000/foo/bar?hoge=fuga');
                 l.hash().should.equal('');
+                l.protocol().should.equal('');
+                l.host().should.equal('example.com');
+                l.port().should.equal(3000);
+                l.path().should.equal('/foo/bar');
+                l.search().should.deep.equal({'hoge': 'fuga'});
             });
 
             it('should be got blank string when url that is omitted port is given', function () {
                 var l = new LocationUtil('http://example.com/foo/bar?hoge=fuga');
                 l.hash().should.equal('');
+                l.protocol().should.equal('http');
+                l.host().should.equal('example.com');
+                should.equal(l.port(), null);
+                l.path().should.equal('/foo/bar');
+                l.search().should.deep.equal({'hoge': 'fuga'});
             });
 
             it('should be got blank string when url that is omitted path is given', function () {
                 var l = new LocationUtil('http://example.com:3000?hoge=fuga');
                 l.hash().should.equal('');
+                l.protocol().should.equal('http');
+                l.host().should.equal('example.com');
+                l.port().should.equal(3000);
+                l.path().should.equal('/');
+                l.search().should.deep.equal({'hoge': 'fuga'});
             });
 
             it('should be got blank string when url that is omitted query parameters is given', function () {
                 var l = new LocationUtil('http://example.com:3000/foo/bar');
                 l.hash().should.equal('');
+                l.protocol().should.equal('http');
+                l.host().should.equal('example.com');
+                l.port().should.equal(3000);
+                l.path().should.equal('/foo/bar');
+                l.search().should.deep.equal({});
             });
 
             it('should be got blank string when minimal url is given', function () {
                 var l = new LocationUtil('example.com');
                 l.hash().should.equal('');
+                l.protocol().should.equal('');
+                l.host().should.equal('example.com');
+                should.equal(l.port(), null);
+                l.path().should.equal('/');
+                l.search().should.deep.equal({});
             });
         });
     });
