@@ -263,6 +263,22 @@ var LocationUtil = (function () {
         return buildURLPath(this);
     };
 
+    LocationUtil.prototype.origin = function () {
+        var url = '';
+
+        if (this._protocol !== '') {
+            url = this._protocol + '://';
+        }
+
+        url += this._host;
+
+        if (this._port !== null) {
+            url += ':' + this._port;
+        }
+
+        return url;
+    };
+
     return LocationUtil;
 }());
 
