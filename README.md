@@ -16,6 +16,7 @@ l.paramString(); // => '?bar=buz'
 l.hash();        // => 'frag'
 l.path();        // => '/foo'
 l.url();         // => '/foo?bar=buz#frag'
+l.origin();      // => 'http://example.com:3000'
 
 l.url('/user?id=123#name').absUrl();               // => 'http://example.com:3000/user?id=123#name'
 l.path('/entry').absUrl();                         // => 'http://example.com:3000/entry?id=123#name'
@@ -134,6 +135,22 @@ var l = new LocationUtil('http://example.com/foo?bar=buz#frag');
 l.url(); // => '/foo?bar=buz#frag'
 l.url('/user?id=123#name');
 l.url(); // => '/user?id=123#name'
+```
+
+- `origin()`
+
+This method provides only getter.
+
+This method returns a string like so `<protocol>://<host>:<port>`.
+If underlying URL doesn't have `protocol` or `port`,
+it will omit them from result.
+
+```javascript
+var l = new LocationUtil('http://example.com:3000/foo?bar=buz#frag');
+l.origin(); // => 'http://example.com:3000'
+
+l = new LocationUtil('http://example.com/foo?bar=buz#frag');
+l.origin(); // => 'http://example.com'
 ```
 
 Author
