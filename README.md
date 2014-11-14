@@ -24,6 +24,34 @@ l.search('date', '20140401', 'id', null).absUrl(); // => 'http://example.com:300
 l.hash('').absUrl();                               // => 'http://example.com:3000/entry?date=20140401'
 ```
 
+Description
+--
+
+This module parse URL and create object.
+Object provides some getter and setter methods.
+It makes you to get URL or a part of that.
+And also you can rewrite and reconstruct URL via object.
+
+This module is inspired by `$location` of [Angular.js](https://angularjs.org/).
+
+This module has no dependencies.
+And it is available to use on browser and node.
+
+Installation
+--
+
+### npm
+
+```
+$ npm install location-util
+```
+
+### bower
+
+```
+$ bower install location-util
+```
+
 Methods
 --
 
@@ -78,7 +106,7 @@ l.search(); // => {'buz': 'qux'}
 
 This method provides getter only.
 
-This method returns query parameter string like a `?foo=bar&buz=qux`. This method *doesn't* ensure the order of key-values.
+This method returns query parameter string like a `?foo=bar&buz=qux`. This method __doesn't__ ensure the order of key-values.
 
 ```javascript
 var l = new LocationUtil('http://example.com?foo=bar');
@@ -152,6 +180,16 @@ l.origin(); // => 'http://example.com:3000'
 l = new LocationUtil('http://example.com/foo?bar=buz#frag');
 l.origin(); // => 'http://example.com'
 ```
+
+See Also
+--
+
+[micro-location.js](https://github.com/cho45/micro-location.js/)
+
+It's just simple and awesome library!
+
+location-util has some additional functions than this,
+but if you don't need them, please try micro-location.js.
 
 Author
 --
